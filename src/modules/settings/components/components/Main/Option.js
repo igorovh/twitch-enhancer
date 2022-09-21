@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Checkbox from './Checkbox';
 import Radio from './Radio';
+import Text from './Text';
 
 const Option = ({ title, name, description, id, type, options }) => {
     return (
@@ -12,6 +13,7 @@ const Option = ({ title, name, description, id, type, options }) => {
             </NameWrapper>
             {type === 'checkbox' && <Checkbox id={id} name={name} />}
             {type === 'radio' && <Radio id={id} name={name} options={options} />}
+            {type === 'text' && <Text id={id} name={name} />}
         </Wrapper>
     );
 };

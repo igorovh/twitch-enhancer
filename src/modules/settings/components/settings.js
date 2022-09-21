@@ -21,10 +21,16 @@ export const settings = {
             type: 'checkbox',
         },
         {
-            id: 'te-mentioned-sound',
+            id: 'te-ping-sound',
             name: 'pingSound.enabled',
             title: 'Play sound when got mentioned',
             type: 'checkbox',
+        },
+        {
+            id: 'te-ping-sound-src',
+            name: 'pingSound.src',
+            title: 'Play sound source',
+            type: 'text',
         },
         {
             id: 'te-messages-hover',
