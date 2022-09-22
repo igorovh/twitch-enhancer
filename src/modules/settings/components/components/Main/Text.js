@@ -1,13 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as Settings from '$Settings';
 
 const Text = ({ id, name }) => {
-    const input = useRef();
+    const [value, setValue] = useState(Settings.get(name));
 
-    console.info('[te]', Settings.get(name));
-
-    const handleChange = () => {
+    const handleChange = (event) => {
+        setValue(event.target.value);
         // Settings.set(name, input.current.checked);
     };
 
@@ -15,8 +14,8 @@ const Text = ({ id, name }) => {
 
     return (
         <Wrapper>
-            <Input onChange={handleChange} ref={input} id={id} />
-            <Label value={Settings.get(name)} htmlFor={id}></Label>
+            <Input id={id} value={value} onChange={handleChange} />
+            <Label type="text" htmlFor={id}></Label>
         </Wrapper>
     );
 };
@@ -38,7 +37,7 @@ const Label = styled.textarea`
     height: 25px;
     width: 350px;
     border-radius: 100px;
-    border: 2px solid var(--te-gray-color-dark);
+    border: 2px solid var(--te-purple-color-light);
     background: var(--te-black);
     color: white;
     display: flex;
