@@ -42,6 +42,13 @@ const SideMenu = () => {
                         <RiVideoLine className="tab-icon" />
                     )}
                 </Button>
+                <Button onClick={() => setSelected('quickLinks')}>
+                    {selected === 'quickLinks' ? (
+                        <RiVideoFill className="tab-icon tab-icon--active" />
+                    ) : (
+                        <RiVideoLine className="tab-icon" />
+                    )}
+                </Button>
             </Tabs>
             <Button onClick={() => setSelected('info')}>
                 {selected === 'info' ? (

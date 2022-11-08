@@ -6,7 +6,7 @@ import { TabContext } from './contexts/TabContext';
 import { hide } from '$Settings';
 
 function App() {
-    const [selected, setSelected] = useState('chat');
+    const [selected, setSelected] = useState('quickLinks');
 
     return (
         <>

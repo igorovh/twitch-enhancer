@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import Checkbox from './Checkbox';
 import Radio from './Radio';
 import Text from './Text';
+import MultiText from './MultiText';
+
+const fullTypes = ['multiText'];
 
 const Option = ({ title, name, description, id, type, options }) => {
     return (
-        <Wrapper>
+        <FullWrapper>
             <NameWrapper>
                 <Name>{title}</Name>
                 {description && <Description>{description}</Description>}
@@ -14,7 +17,8 @@ const Option = ({ title, name, description, id, type, options }) => {
             {type === 'checkbox' && <Checkbox id={id} name={name} />}
             {type === 'radio' && <Radio id={id} name={name} options={options} />}
             {type === 'text' && <Text id={id} name={name} />}
-        </Wrapper>
+            {type === 'multiText' && <MultiText id={id} name={name} />}
+        </FullWrapper>
     );
 };
 
@@ -23,6 +27,15 @@ export default Option;
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    padding: 1.2rem;
+    color: white;
+    background-color: var(--te-bg-color-dark);
+    border-radius: 0.4rem;
+`;
+
+const FullWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
     padding: 1.2rem;
     color: white;
     background-color: var(--te-bg-color-dark);

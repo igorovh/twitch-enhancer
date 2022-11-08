@@ -27,12 +27,6 @@ export const settings = {
             type: 'checkbox',
         },
         {
-            id: 'te-ping-sound-src',
-            name: 'pingSound.src',
-            title: 'Play sound source',
-            type: 'text',
-        },
-        {
             id: 'te-messages-hover',
             name: 'highlightMentions',
             title: 'Highlight messages from mentioned user',
@@ -79,6 +73,14 @@ export const settings = {
             name: 'watchtime',
             description: 'Count the time spent watching streams (data is not shared with anyone)',
             type: 'checkbox',
+        },
+    ],
+    quickLinks: [
+        {
+            id: 'te-quick-links',
+            title: 'Quick Access Links',
+            name: 'quickLinks',
+            type: 'multiText',
         },
     ],
 };
