@@ -135,17 +135,20 @@ export default class KickUtils {
 		if (this.chatScroller?.container.isConnected) return this.chatScroller;
 		const container = this.findChatScrollContainer();
 		if (!container) return undefined;
-		const scroller = { container, sticky: true };
+		const scroller = { container, sticky: KickUtils.isAtBottom(container) };
 		container.addEventListener(
 			"scroll",
 			() => {
-				scroller.sticky =
-					container.scrollHeight - container.scrollTop - container.clientHeight <= KickUtils.CHAT_STICKY_THRESHOLD;
+				scroller.sticky = KickUtils.isAtBottom(container);
 			},
 			{ passive: true },
 		);
 		this.chatScroller = scroller;
 		return scroller;
+	}
+
+	private static isAtBottom(container: HTMLElement) {
+		return container.scrollHeight - container.scrollTop - container.clientHeight <= KickUtils.CHAT_STICKY_THRESHOLD;
 	}
 
 	private findChatScrollContainer(): HTMLElement | undefined {
