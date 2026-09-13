@@ -32,6 +32,7 @@ export type TwitchSettings = {
 	xayoWatchtimePeriod: XayoWatchtimePeriod;
 	channelSection: boolean;
 	chattersEnabled: boolean;
+	hideStories: boolean;
 };
 
 export type TwitchSettingsEvents = {
