@@ -16,7 +16,7 @@ export default class LatencySampler {
 		}
 
 		const previous = this.samples[this.samples.length - 1];
-		if (previous !== undefined && sample - previous > this.resetThresholdSeconds) {
+		if (previous !== undefined && Math.abs(sample - previous) > this.resetThresholdSeconds) {
 			this.clear();
 		}
 

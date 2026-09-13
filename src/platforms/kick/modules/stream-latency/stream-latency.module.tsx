@@ -62,12 +62,11 @@ export default class StreamLatencyModule extends KickModule {
 		this.setLive(isLive);
 		if (!video || !isLive || video.paused) {
 			this.latencySampler.clear();
+			this.latencyCounter.value = -1;
 			return;
 		}
 		const latency = this.latencySampler.add(this.kickUtils().getLatency(video));
-		if (latency !== undefined) {
-			this.latencyCounter.value = latency;
-		}
+		this.latencyCounter.value = latency ?? -1;
 	}
 
 	private watchPlaybackRate() {
@@ -91,6 +90,7 @@ export default class StreamLatencyModule extends KickModule {
 		const latency = this.kickUtils().getLatency(video);
 		if (latency !== undefined && latency > 0) {
 			video.currentTime += latency;
+			this.latencySampler.clear();
 		}
 	}
 

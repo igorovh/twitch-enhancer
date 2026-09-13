@@ -5,6 +5,7 @@ import type { KickModuleConfig } from "$types/shared/module/module.types.ts";
 export default class StreamLatencyReducerModule extends KickModule {
 	private updateInterval: NodeJS.Timeout | undefined;
 	private latencySampler = new LatencySampler();
+	private appliedRate = 1;
 
 	readonly config: KickModuleConfig = {
 		name: "stream-latency-reducer",
@@ -26,22 +27,32 @@ export default class StreamLatencyReducerModule extends KickModule {
 	private run(): void {
 		if (this.updateInterval) clearInterval(this.updateInterval);
 		this.updateInterval = setInterval(() => {
-			const videoPlayer = this.getPlayer();
-			if (!videoPlayer) return;
-
-			if (videoPlayer.paused) {
+			const video = document.querySelector<HTMLVideoElement>("video#video-player");
+			if (!video) {
 				this.latencySampler.clear();
-				this.changePlaybackSpeed(videoPlayer, 1);
 				return;
 			}
 
-			const latency = this.latencySampler.add(this.kickUtils().getLatency(videoPlayer));
-			this.changePlaybackSpeed(videoPlayer, this.getTargetRate(latency));
+			if (!this.kickUtils().isLiveVideo(video) || video.paused) {
+				this.latencySampler.clear();
+				this.resetPlaybackSpeed(video);
+				return;
+			}
+
+			const latency = this.latencySampler.add(this.kickUtils().getLatency(video));
+			this.changePlaybackSpeed(video, this.getTargetRate(latency));
 		}, 1000);
 	}
 
 	private changePlaybackSpeed(video: HTMLVideoElement, rate: number) {
+		this.appliedRate = rate;
 		video.playbackRate = rate;
+	}
+
+	// Only undo our own catch-up rate so a manually chosen VOD speed is left alone.
+	private resetPlaybackSpeed(video: HTMLVideoElement) {
+		if (this.appliedRate === 1) return;
+		this.changePlaybackSpeed(video, 1);
 	}
 
 	private getTargetRate(latency: number | undefined): number {
@@ -61,13 +72,5 @@ export default class StreamLatencyReducerModule extends KickModule {
 			minThreshold: settings.streamLatencyReducerMinThreshold,
 			maxThreshold: settings.streamLatencyReducerMaxThreshold,
 		};
-	}
-
-	private getPlayer() {
-		const video = document.querySelector<HTMLVideoElement>("video#video-player");
-		if (!video || !this.kickUtils().isLiveVideo(video)) {
-			return null;
-		}
-		return video;
 	}
 }
