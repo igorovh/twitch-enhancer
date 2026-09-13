@@ -26,12 +26,13 @@ export default class SettingsButtonModule extends KickModule {
 	};
 
 	private async run(elements: Element[]) {
-		const element = elements.at(0);
-		const menu = element?.tagName === "NAV" ? element.lastElementChild : element;
-		if (!menu) return;
-		if (menu.querySelector(`.${this.getId()}`)) return;
-		const wrappers = this.commonUtils().createEmptyElements(this.getId(), [menu], "span");
+		const menus = elements
+			.map((element) => (element.tagName === "NAV" ? element.lastElementChild : element))
+			.filter((menu): menu is Element => menu !== null && !menu.querySelector(`.${this.getId()}`));
+		if (menus.length < 1) return;
+
 		const logo = await this.commonUtils().getAssetFile(this.workerService(), "enhancer/logo-gray.svg");
+		const wrappers = this.commonUtils().createEmptyElements(this.getId(), menus, "span");
 		wrappers.forEach((element) => {
 			element.style.order = "-1";
 			render(<SettingsButtonComponent onClick={this.openSettings.bind(this)} logoUrl={logo} />, element);
