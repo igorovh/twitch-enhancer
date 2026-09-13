@@ -188,6 +188,7 @@ export default class ChatAttachmentsModule extends KickModule {
 				min-height: 16px;
 				max-height: 256px;
 				width: 100%;
+				object-fit: contain;
 			}`);
 	}
 }

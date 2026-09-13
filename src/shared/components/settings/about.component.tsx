@@ -69,90 +69,6 @@ const Card = styled.div`
 	padding: 20px;
 `;
 
-const Disclosure = styled.details`
-	background: var(--settings-surface);
-	border: 1px solid var(--settings-border);
-	border-radius: 12px;
-	overflow: hidden;
-`;
-
-const DisclosureSummary = styled.summary`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	padding: 20px;
-	cursor: pointer;
-	list-style: none;
-
-	&::-webkit-details-marker {
-		display: none;
-	}
-
-	&:hover > span:first-child {
-		color: #9147ff;
-	}
-`;
-
-const DisclosureTitle = styled.span`
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	color: var(--settings-text-primary);
-	font-size: 15px;
-	font-weight: 600;
-	line-height: 1;
-	transition: color 0.15s ease;
-
-	&::before {
-		content: "";
-		width: 3px;
-		height: 16px;
-		background: #9147ff;
-		border-radius: 2px;
-	}
-`;
-
-const DisclosureHint = styled.span`
-	display: flex;
-	align-items: center;
-	color: var(--settings-text-muted);
-	font-size: 11px;
-	line-height: 1;
-	flex-shrink: 0;
-
-	&::after {
-		content: "+";
-		color: #9147ff;
-		font-size: 16px;
-		margin-left: 8px;
-	}
-
-	${Disclosure}[open] &::after {
-		content: "-";
-	}
-`;
-
-const DisclosureContent = styled.div`
-	border-top: 1px solid var(--settings-border);
-	padding: 16px 20px 20px;
-	color: var(--settings-text-muted);
-	font-size: 11.5px;
-	line-height: 1.6;
-
-	p {
-		margin: 0;
-	}
-
-	p + p {
-		margin-top: 12px;
-	}
-
-	p + ul {
-		margin-top: 18px;
-	}
-`;
-
 const SectionTitle = styled.h2`
 	color: var(--settings-text-primary);
 	margin: 0 0 6px 0;
@@ -184,37 +100,17 @@ const Description = styled.p`
 	font-size: 11.5px;
 `;
 
-const ServiceList = styled.ul`
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-	gap: 10px;
-	margin: 0;
-	padding: 0;
-	list-style: none;
+const PrivacyDescription = styled(Description)`
+	margin-top: 12px;
 `;
 
-const ServiceItem = styled.li`
-	padding: 14px;
-	background: var(--settings-control-background);
-	border: 1px solid var(--settings-border);
-	border-radius: 8px;
-	transition: border-color 0.15s ease;
+const DocLink = styled.a`
+	color: #9147ff;
+	font-weight: 600;
+	text-decoration: none;
 
 	&:hover {
-		border-color: var(--settings-control-border);
-	}
-
-	a {
-		color: #9147ff;
-		font-size: 11px;
-		font-weight: 600;
-		text-decoration: none;
-	}
-
-	p {
-		margin: 6px 0 0;
-		color: var(--settings-text-muted);
-		font-size: 10px;
+		text-decoration: underline;
 	}
 `;
 
@@ -313,43 +209,6 @@ interface EnhancerAboutComponentProps {
 }
 
 export function EnhancerAboutComponent({ platform, workerService, icons }: EnhancerAboutComponentProps) {
-	const externalServices = [
-		{
-			name: "api.enhancer.at",
-			url: "https://api.enhancer.at",
-			description: "Enhancer's backend for custom badges, nickname customizations, and real-time extension data.",
-		},
-		{
-			name: "xayo.pl",
-			url: "https://xayo.pl",
-			description: "Retrieves viewer watchtime for Polish Twitch channels when Usercard Watchtime is enabled.",
-		},
-		{
-			name: "gql.twitch.tv",
-			url: "https://gql.twitch.tv/gql",
-			description: "Twitch's API for feature data such as chatter counts and VOD timestamps.",
-		},
-		{
-			name: "kick.com/api/v2",
-			url: "https://kick.com/api/v2",
-			description: "Kick's API for channel information used by Kick features.",
-		},
-		{
-			name: "corsgo.enhancer.at",
-			url: "https://corsgo.enhancer.at",
-			description: "Loads metadata for supported chat image links when the source blocks browser requests.",
-		},
-		{
-			name: "preview.enhancer.at",
-			url: "https://preview.enhancer.at",
-			description: "Resolves previews for Discord cached image links when chat images are enabled.",
-		},
-		{
-			name: "Google Fonts",
-			url: "https://fonts.google.com",
-			description: "Loads optional custom fonts when Additional Fonts is enabled.",
-		},
-	];
 	const contributors = ["igorovh", "czestereq", "d33zor", "kawre", "usermacieg", "kaedriz", "esteeming"];
 	const testers = [
 		"piotrgamerpl",
@@ -440,48 +299,34 @@ export function EnhancerAboutComponent({ platform, workerService, icons }: Enhan
 				</ContributorGrid>
 			</Card>
 
-			<Disclosure>
-				<DisclosureSummary>
-					<DisclosureTitle>External APIs and Services</DisclosureTitle>
-					<DisclosureHint>View details</DisclosureHint>
-				</DisclosureSummary>
-				<DisclosureContent>
-					<Description>Depending on the platform and enabled features, Enhancer uses these services:</Description>
-					<ServiceList>
-						{externalServices.map((service) => (
-							<ServiceItem key={service.name}>
-								<a href={service.url} target="_blank" rel="noopener noreferrer">
-									{service.name}
-								</a>
-								<p>{service.description}</p>
-							</ServiceItem>
-						))}
-					</ServiceList>
-				</DisclosureContent>
-			</Disclosure>
+			<Card>
+				<SectionTitle>Privacy &amp; Data</SectionTitle>
+				<PrivacyDescription>
+					Enhancer may connect to external services depending on the platform and enabled features. See how we handle
+					your data in our{" "}
+					<DocLink
+						href="https://documents.enhancer.at/extension/privacy-policy/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						privacy policy
+					</DocLink>{" "}
+					and which services we use in our{" "}
+					<DocLink
+						href="https://documents.enhancer.at/extension/third-parties/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						third-party overview
+					</DocLink>
+					.
+				</PrivacyDescription>
 
-			<Disclosure>
-				<DisclosureSummary>
-					<DisclosureTitle>Privacy &amp; data</DisclosureTitle>
-					<DisclosureHint>View details</DisclosureHint>
-				</DisclosureSummary>
-				<DisclosureContent>
-					<p>
-						Enhancer connects to our API to provide data required by some features. During a connection, we process
-						limited technical information such as the extension version and connection source type. The country may be
-						inferred from the connection IP address.
-					</p>
-					<p>
-						Enhancer does not store IP addresses or use them for profiling, advertising, or identifying users. An IP
-						address may only be processed temporarily to determine the country and to prevent abuse or excessive
-						connections. It is not stored in user-facing metrics.
-					</p>
-					<p>
-						Technical information may be used in aggregated statistics for compatibility, security, and service
-						performance monitoring, and retained according to the monitoring system&apos;s retention period.
-					</p>
-				</DisclosureContent>
-			</Disclosure>
+				<Description>
+					If you have any questions, feel free to contact us at{" "}
+					<DocLink href="mailto:contact@enhancer.at">contact@enhancer.at</DocLink>.
+				</Description>
+			</Card>
 		</Container>
 	);
 }

@@ -15,9 +15,13 @@ export default class ChatFixAutoScrollModule extends KickModule {
 		],
 	};
 
-	private async handleMessage({ isRerender }: KickChatMessageEvent) {
-		if (isRerender) return;
-		await this.commonUtils().delay(3);
-		await this.kickUtils().scrollToBottomOnChat();
+	private frame: number | undefined;
+
+	private handleMessage({ isRerender }: KickChatMessageEvent) {
+		if (isRerender || this.frame !== undefined) return;
+		this.frame = requestAnimationFrame(() => {
+			this.frame = undefined;
+			this.kickUtils().scrollToBottomOnChat();
+		});
 	}
 }

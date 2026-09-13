@@ -1,15 +1,15 @@
+import {
+	WatchTimePopupErrorMessage,
+	WatchTimePopupLoadingMessage,
+	WatchTimePopupMessage,
+	WatchTimeUserCard,
+} from "$shared/components/watchtime/watchtime-card.tsx";
 import type { EnhancerStreamerWatchTimeData } from "$types/apis/enhancer.apis.ts";
 import type { UserCardComponent } from "$types/platforms/twitch/twitch.utils.types.ts";
 import type { TwitchModuleConfig } from "$types/shared/module/module.types.ts";
 import { signal } from "@preact/signals";
 import { render } from "preact";
 import TwitchModule from "../../twitch.module.ts";
-import {
-	WatchTimePopupErrorMessage,
-	WatchTimePopupLoadingMessage,
-	WatchTimePopupMessage,
-	WatchTimeUserCard,
-} from "./watchtime-card.tsx";
 
 export default class WatchTimeModule extends TwitchModule {
 	private isLoadingPopupVisible = false;
@@ -54,13 +54,18 @@ export default class WatchTimeModule extends TwitchModule {
 		const data = signal<undefined | EnhancerStreamerWatchTimeData[]>(undefined);
 		const isLoading = signal(false);
 		const isError = signal(false);
+		const isCollapsed = signal(false);
 
 		const fetchWatchtime = async () => {
+			if (data.value !== undefined) {
+				isCollapsed.value = false;
+				return;
+			}
 			if (isLoading.value) return;
 			isError.value = false;
 			isLoading.value = true;
 			try {
-				data.value = await this.enhancerApi().getWatchTime(username);
+				data.value = await this.enhancerApi().getWatchTime(username, this.settings().xayoWatchtimePeriod);
 			} catch (error) {
 				this.logger.error(`Failed to fetch usercard watchtime ${username}`, error);
 				isError.value = true;
@@ -69,14 +74,21 @@ export default class WatchTimeModule extends TwitchModule {
 			}
 		};
 
+		const toggleCollapsed = () => {
+			isCollapsed.value = true;
+		};
+
 		wrappers.forEach((element) => {
 			render(
 				<WatchTimeUserCard
 					username={username}
+					platform="twitch"
 					data={data}
 					isLoading={isLoading}
 					isError={isError}
+					isCollapsed={isCollapsed}
 					onFetch={fetchWatchtime}
+					onToggleCollapse={toggleCollapsed}
 				/>,
 				element,
 			);
@@ -120,7 +132,7 @@ export default class WatchTimeModule extends TwitchModule {
 	}
 
 	private async fetchWatchTimeByUserName(username: string): Promise<EnhancerStreamerWatchTimeData[]> {
-		return await this.enhancerApi().getWatchTime(username);
+		return await this.enhancerApi().getWatchTime(username, this.settings().xayoWatchtimePeriod);
 	}
 
 	private renderLoading(username: string) {

@@ -24,6 +24,7 @@ import ChatMessageHideGiphy from "./modules/chat-message-hide-giphy/chat-message
 import ChatMessagePopupModule from "./modules/chat-message-popup/chat-message-popup.module.tsx";
 import ChatModule from "./modules/chat/chat.module.tsx";
 import ClipDownloadModule from "./modules/clip-download/clip-download.module.tsx";
+import HideStoriesModule from "./modules/hide-stories/hide-stories.module.ts";
 import StreamLatencyReducerModule from "./modules/stream-latency-reducer/stream-latency-reducer.module.tsx";
 import StreamLatencyModule from "./modules/stream-latency/stream-latency.module.tsx";
 import type TwitchModule from "./twitch.module.ts";
@@ -61,6 +62,7 @@ export default class TwitchPlatform extends Platform<TwitchModule, TwitchEvents,
 			new ChatBadgesModule(...dependencies),
 			new PinStreamerModule(...dependencies),
 			new ChattersModule(...dependencies),
+			new HideStoriesModule(...dependencies),
 			new WatchTimeModule(...dependencies),
 			new ChatMessagePopupModule(...dependencies),
 			new RealVideoTimeModule(...dependencies),
