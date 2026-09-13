@@ -41,6 +41,10 @@ export default class KickWatchTimeModule extends KickModule {
 		const isCollapsed = signal(false);
 
 		const fetchWatchtime = async () => {
+			if (data.value !== undefined) {
+				isCollapsed.value = false;
+				return;
+			}
 			if (isLoading.value) return;
 			isError.value = false;
 			isLoading.value = true;
@@ -55,7 +59,7 @@ export default class KickWatchTimeModule extends KickModule {
 		};
 
 		const toggleCollapsed = () => {
-			isCollapsed.value = !isCollapsed.value;
+			isCollapsed.value = true;
 		};
 
 		render(

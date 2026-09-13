@@ -17,14 +17,16 @@ const WatchTimeItem = styled.a<PlatformStyleProps>`
 	justify-content: space-between;
 	align-items: center;
 	padding: 6px;
-	border-bottom: 1px solid ${({ $platform }) => ($platform === "kick" ? "#2b2b2b" : "#303032")};
+	border-bottom: 1px solid
+		${({ $platform }) => ($platform === "kick" ? "#2b2b2b" : "var(--color-border-base, #303032)")};
 	transition: background-color 0.2s ease;
 	text-decoration: none;
 	color: inherit;
 	cursor: pointer;
 
 	&:hover {
-		background-color: ${({ $platform }) => ($platform === "kick" ? "#1d2b1b" : "#232326")};
+		background-color: ${({ $platform }) =>
+			$platform === "kick" ? "#1d2b1b" : "var(--color-background-button-text-hover, #232326)"};
 		text-decoration: none;
 	}
 
@@ -90,20 +92,25 @@ const WatchTimeDisplay = ({ watchTime, username, platform }: WatchTimeDisplayPro
 
 const UserCardWrapper = styled.div<UserCardStyleProps>`
 	position: relative;
-	background-color: ${({ $platform }) => ($platform === "kick" ? "transparent" : "#18181b")};
+	background-color: ${({ $platform }) => ($platform === "kick" ? "transparent" : "var(--color-background-base, #18181b)")};
 	border: none;
 	border-radius: 4px;
-	padding: ${({ $collapsed }) => ($collapsed ? "4px 32px 4px 8px" : "12px 32px 32px 16px")};
-	color: #efeff1;
+	padding: ${({ $collapsed }) => ($collapsed ? "4px 8px" : "12px 16px")};
+	color: ${({ $platform }) => ($platform === "kick" ? "#efeff1" : "var(--color-text-base, #efeff1)")};
 	--main-color: ${({ $platform }) => ($platform === "kick" ? "#53fc18" : "#bf94ff")};
 `;
 
+const WatchTimeHeader = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+`;
+
 const CollapseButton = styled.button<PlatformStyleProps>`
-	position: absolute;
-	right: 6px;
-	bottom: 6px;
 	width: 22px;
 	height: 22px;
+	flex-shrink: 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -112,20 +119,14 @@ const CollapseButton = styled.button<PlatformStyleProps>`
 	border-radius: 4px;
 	background: transparent;
 	color: ${({ $platform }) => ($platform === "kick" ? "#53fc18" : "#bf94ff")};
+	font-size: 18px;
+	line-height: 1;
 	cursor: pointer;
 
 	&:hover {
-		background: ${({ $platform }) => ($platform === "kick" ? "#1d2b1b" : "#232326")};
+		background: ${({ $platform }) =>
+			$platform === "kick" ? "#1d2b1b" : "var(--color-background-button-text-hover, #232326)"};
 	}
-`;
-
-const CollapseIcon = styled.span<{ $collapsed: boolean }>`
-	width: 7px;
-	height: 7px;
-	border-right: 2px solid currentColor;
-	border-bottom: 2px solid currentColor;
-	transform: ${({ $collapsed }) => ($collapsed ? "rotate(225deg)" : "rotate(45deg)")};
-	transition: transform 0.2s ease;
 `;
 
 const Actions = styled.div`
@@ -134,8 +135,9 @@ const Actions = styled.div`
 `;
 
 const ActionButton = styled.button<PlatformStyleProps>`
-	background-color: ${({ $platform }) => ($platform === "kick" ? "#53fc18" : "#9147ff")};
-	color: ${({ $platform }) => ($platform === "kick" ? "#0d0d0d" : "#ffffff")};
+	background-color: ${({ $platform }) =>
+		$platform === "kick" ? "#53fc18" : "var(--color-background-button-primary-default, #9147ff)"};
+	color: ${({ $platform }) => ($platform === "kick" ? "#0d0d0d" : "var(--color-text-button-primary, #ffffff)")};
 	border: none;
 	border-radius: 4px;
 	padding: 6px 12px;
@@ -148,8 +150,8 @@ const ActionButton = styled.button<PlatformStyleProps>`
 	text-align: center;
 
 	&:hover {
-		background-color: ${({ $platform }) => ($platform === "kick" ? "#6cff3a" : "#9147ff")};
-		filter: ${({ $platform }) => ($platform === "kick" ? "none" : "brightness(1.1)")};
+		background-color: ${({ $platform }) =>
+			$platform === "kick" ? "#6cff3a" : "var(--color-background-button-primary-hover, #772ce8)"};
 	}
 `;
 
@@ -175,21 +177,21 @@ export const WatchTimeUserCard = ({
 	onToggleCollapse,
 }: UserCardProps) => {
 	const collapseButton = (
-		<CollapseButton
-			$platform={platform}
-			type="button"
-			aria-label={isCollapsed.value ? "Expand watchtime" : "Collapse watchtime"}
-			aria-expanded={!isCollapsed.value}
-			onClick={onToggleCollapse}
-		>
-			<CollapseIcon $collapsed={isCollapsed.value} />
+		<CollapseButton $platform={platform} type="button" aria-label="Hide watchtime" onClick={onToggleCollapse}>
+			×
 		</CollapseButton>
 	);
 
 	if (isCollapsed.value) {
 		return (
 			<UserCardWrapper $platform={platform} $collapsed>
-				{collapseButton}
+				<Actions>
+					{onFetch && (
+						<ActionButton $platform={platform} onClick={onFetch}>
+							Click to see {username} watchtime
+						</ActionButton>
+					)}
+				</Actions>
 			</UserCardWrapper>
 		);
 	}
@@ -247,9 +249,11 @@ export const WatchTimeUserCard = ({
 
 	return (
 		<UserCardWrapper $platform={platform} $collapsed={false}>
-			<strong>Watchtime of {username}:</strong>
+			<WatchTimeHeader>
+				<strong>Watchtime of {username}:</strong>
+				{collapseButton}
+			</WatchTimeHeader>
 			<WatchTimeDisplay watchTime={watchTime} username={username} platform={platform} />
-			{collapseButton}
 		</UserCardWrapper>
 	);
 };

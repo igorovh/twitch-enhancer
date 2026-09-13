@@ -57,6 +57,10 @@ export default class WatchTimeModule extends TwitchModule {
 		const isCollapsed = signal(false);
 
 		const fetchWatchtime = async () => {
+			if (data.value !== undefined) {
+				isCollapsed.value = false;
+				return;
+			}
 			if (isLoading.value) return;
 			isError.value = false;
 			isLoading.value = true;
@@ -71,7 +75,7 @@ export default class WatchTimeModule extends TwitchModule {
 		};
 
 		const toggleCollapsed = () => {
-			isCollapsed.value = !isCollapsed.value;
+			isCollapsed.value = true;
 		};
 
 		wrappers.forEach((element) => {
