@@ -8,10 +8,6 @@ interface PlatformStyleProps {
 	$platform: PlatformType;
 }
 
-interface UserCardStyleProps extends PlatformStyleProps {
-	$collapsed: boolean;
-}
-
 const WatchTimeItem = styled.a<PlatformStyleProps>`
 	display: flex;
 	justify-content: space-between;
@@ -90,12 +86,11 @@ const WatchTimeDisplay = ({ watchTime, username, platform }: WatchTimeDisplayPro
 	);
 };
 
-const UserCardWrapper = styled.div<UserCardStyleProps>`
-	position: relative;
+const UserCardWrapper = styled.div<PlatformStyleProps>`
 	background-color: ${({ $platform }) => ($platform === "kick" ? "transparent" : "var(--color-background-base, #18181b)")};
 	border: none;
 	border-radius: 4px;
-	padding: ${({ $collapsed }) => ($collapsed ? "4px 8px" : "12px 16px")};
+	padding: 12px 16px;
 	color: ${({ $platform }) => ($platform === "kick" ? "#efeff1" : "var(--color-text-base, #efeff1)")};
 	--main-color: ${({ $platform }) => ($platform === "kick" ? "#53fc18" : "#bf94ff")};
 `;
@@ -185,7 +180,7 @@ export const WatchTimeUserCard = ({
 
 	if (isCollapsed.value) {
 		return (
-			<UserCardWrapper $platform={platform} $collapsed>
+			<UserCardWrapper $platform={platform}>
 				<Actions>
 					{onFetch && (
 						<ActionButton $platform={platform} onClick={onFetch}>
@@ -199,7 +194,7 @@ export const WatchTimeUserCard = ({
 
 	if (isLoading.value) {
 		return (
-			<UserCardWrapper $platform={platform} $collapsed={false}>
+			<UserCardWrapper $platform={platform}>
 				<LoadingComponent text="Fetching data from xayo.pl..." />
 				{collapseButton}
 			</UserCardWrapper>
@@ -208,7 +203,7 @@ export const WatchTimeUserCard = ({
 
 	if (isError.value) {
 		return (
-			<UserCardWrapper $platform={platform} $collapsed={false}>
+			<UserCardWrapper $platform={platform}>
 				<p>An unexpected error occurred and we are sorry about that :(</p>
 				<p>Please try again later.</p>
 				{onFetch && (
@@ -226,7 +221,7 @@ export const WatchTimeUserCard = ({
 	const watchTime = data.value;
 	if (watchTime === undefined) {
 		return (
-			<UserCardWrapper $platform={platform} $collapsed={false}>
+			<UserCardWrapper $platform={platform}>
 				<Actions>
 					{onFetch && (
 						<ActionButton $platform={platform} onClick={onFetch}>
@@ -241,7 +236,7 @@ export const WatchTimeUserCard = ({
 
 	if (watchTime.length === 0) {
 		return (
-			<UserCardWrapper $platform={platform} $collapsed={false}>
+			<UserCardWrapper $platform={platform}>
 				No watchtime data available.
 				{collapseButton}
 			</UserCardWrapper>
@@ -249,7 +244,7 @@ export const WatchTimeUserCard = ({
 	}
 
 	return (
-		<UserCardWrapper $platform={platform} $collapsed={false}>
+		<UserCardWrapper $platform={platform}>
 			<WatchTimeHeader>
 				<strong>Watchtime of {username}:</strong>
 				{collapseButton}
