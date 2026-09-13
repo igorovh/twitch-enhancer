@@ -92,14 +92,12 @@ export default class ImageChatAttachmentHandler extends ChatAttachmentHandler {
 		image.classList.add("enhancer-chat-image");
 
 		const styleAsFakeImage = () => {
-			image.style.objectFit = "contain";
 			image.style.backgroundColor = "rgba(22, 16, 33, 1)";
 			image.style.backgroundImage = "linear-gradient(57deg, rgba(22, 16, 33, 1) 0%, rgba(94, 45, 191, 1) 100%)";
 		};
 
 		const styleAsOriginal = () => {
-			image.style.objectFit = "";
-			image.style.background = "";
+			image.style.backgroundColor = "";
 			image.style.backgroundImage = "";
 		};
 
@@ -107,8 +105,8 @@ export default class ImageChatAttachmentHandler extends ChatAttachmentHandler {
 			element.href = this.parsePreviewUrl(data.url).href;
 			element.classList.add("enhancer-chat-link");
 			element.replaceChildren(image);
-			image.style.width = `${image.width}px`;
-			image.style.height = `${image.height}px`;
+			image.style.objectFit = "contain";
+			image.style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
 			if (this.config.imagesOnHover.value) {
 				styleAsFakeImage();
 				image.src = this.config.imageOnHoverSource;
