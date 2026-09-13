@@ -292,28 +292,24 @@ export function EnhancerAboutComponent({ platform, workerService, icons }: Enhan
 			</Card>
 
 			<Card>
-				<SectionTitle>External APIs and Services</SectionTitle>
+				<SectionTitle>Privacy &amp; Data</SectionTitle>
 				<Description>
-					Depending on the platform and enabled features, Enhancer uses external services. See the full list in our{" "}
-					<DocLink
-						href="https://documents.enhancer.at/extension/third-parties/"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						third-party services overview
-					</DocLink>
-					.
-				</Description>
-
-				<SectionTitle>Privacy &amp; data</SectionTitle>
-				<Description>
-					For details on how Enhancer processes your data, see our{" "}
+					Enhancer may connect to external services depending on the platform and enabled features. See how we handle
+					your data in our{" "}
 					<DocLink
 						href="https://documents.enhancer.at/extension/privacy-policy/"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						privacy policy
+					</DocLink>{" "}
+					and which services we use in our{" "}
+					<DocLink
+						href="https://documents.enhancer.at/extension/third-parties/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						third-party overview
 					</DocLink>
 					.
 				</Description>
