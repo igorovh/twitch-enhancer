@@ -8,14 +8,14 @@ const WatchTimeItem = styled.a`
 	justify-content: space-between;
 	align-items: center;
 	padding: 6px;
-	border-bottom: 1px solid #303032;
+	border-bottom: 1px solid var(--color-border-base, #303032);
 	transition: background-color 0.2s ease;
 	text-decoration: none;
 	color: inherit;
 	cursor: pointer;
 
 	&:hover {
-		background-color: #232326;
+		background-color: var(--color-background-button-text-hover, #232326);
 		text-decoration: none;
 	}
 
@@ -72,9 +72,9 @@ const WatchTimeDisplay = ({ watchTime, username }: WatchTimeDisplayProps) => {
 };
 
 const UserCardWrapper = styled.div`
-	background-color: #18181b;
+	background-color: var(--color-background-base, #18181b);
 	padding: 12px 16px;
-	color: #efeff1;
+	color: var(--color-text-base, #efeff1);
 	--main-color: #bf94ff;
 `;
 
@@ -84,8 +84,8 @@ const Actions = styled.div`
 `;
 
 const ActionButton = styled.button`
-	background-color: #9147ff;
-	color: #ffffff;
+	background-color: var(--color-background-button-primary-default, #9147ff);
+	color: var(--color-text-button-primary, #ffffff);
 	border: none;
 	border-radius: 4px;
 	padding: 6px 12px;
@@ -98,7 +98,7 @@ const ActionButton = styled.button`
 	text-align: center;
 
 	&:hover {
-		filter: brightness(1.1);
+		background-color: var(--color-background-button-primary-hover, #772ce8);
 	}
 `;
 
@@ -159,7 +159,7 @@ export const WatchTimePopupLoadingMessage = () => {
 };
 
 const PopupErrorText = styled.div`
-	color: #8e8e8e;
+	color: var(--color-text-alt, #8e8e8e);
 	font-size: 13px;
 `;
 
@@ -173,7 +173,7 @@ export const WatchTimePopupErrorMessage = () => {
 };
 
 const PopupNoDataMessage = styled.div`
-	color: #8e8e8e;
+	color: var(--color-text-alt, #8e8e8e);
 	text-align: center;
 	padding: 10px 0;
 `;
