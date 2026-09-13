@@ -115,9 +115,9 @@ export default class KickUtils {
 		return video.duration === Number.POSITIVE_INFINITY || video.duration > KickUtils.FIREFOX_LIVE_VIDEO_THRESHOLD;
 	}
 
-	getLatency(video: HTMLVideoElement): number {
+	getLatency(video: HTMLVideoElement): number | undefined {
 		const { currentTime, buffered } = video;
-		if (buffered.length === 0) return -1;
+		if (buffered.length === 0) return undefined;
 		const bufferEnd = buffered.end(buffered.length - 1);
 
 		return bufferEnd - currentTime;
