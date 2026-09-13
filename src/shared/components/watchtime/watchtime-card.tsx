@@ -59,6 +59,7 @@ const WatchTimeDisplay = ({ watchTime, username, platform }: WatchTimeDisplayPro
 	const topFive = watchTime.slice(0, 5);
 	const totalCount = watchTime.reduce((acc, item) => acc + item.minutes, 0);
 	const streamerUrl = platform === "kick" ? "https://kick.com" : "https://twitch.tv";
+	const profileUrl = platform === "kick" ? `https://xayo.pl/kick/${username}` : `https://xayo.pl/${username}`;
 
 	return (
 		<>
@@ -74,12 +75,7 @@ const WatchTimeDisplay = ({ watchTime, username, platform }: WatchTimeDisplayPro
 					<span>{formatWatchTime(item.minutes)}</span>
 				</WatchTimeItem>
 			))}
-			<TotalWatchTimeItem
-				href={`https://xayo.pl/${username}`}
-				$platform={platform}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
+			<TotalWatchTimeItem href={profileUrl} $platform={platform} target="_blank" rel="noopener noreferrer">
 				Total watch time: {formatWatchTime(totalCount)}
 			</TotalWatchTimeItem>
 		</>
