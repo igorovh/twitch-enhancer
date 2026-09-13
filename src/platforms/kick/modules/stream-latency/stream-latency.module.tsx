@@ -1,4 +1,5 @@
 import KickModule from "$kick/kick.module.ts";
+import LatencySampler from "$kick/kick.latency-sampler.ts";
 import { LatencyComponent } from "$shared/components/latency/latency.component.tsx";
 import type { KickModuleConfig } from "$types/shared/module/module.types.ts";
 import { signal } from "@preact/signals";
@@ -9,7 +10,7 @@ export default class StreamLatencyModule extends KickModule {
 	private isLiveState = signal(false);
 	private updateInterval: NodeJS.Timeout | undefined;
 	private playbackRate = signal(1);
-	private latencyTimings = signal<number[]>([]);
+	private latencySampler = new LatencySampler();
 
 	readonly config: KickModuleConfig = {
 		name: "stream-latency",
@@ -57,34 +58,16 @@ export default class StreamLatencyModule extends KickModule {
 
 	private updateLatency(): void {
 		const video = this.getVideoElement();
-		if (!video || !this.kickUtils().isLiveVideo(video)) {
-			this.setLive(false);
+		const isLive = !!video && this.kickUtils().isLiveVideo(video);
+		this.setLive(isLive);
+		if (!video || !isLive || video.paused) {
+			this.latencySampler.clear();
 			return;
 		}
-		this.setLive(true);
-		if (video.paused) return;
-		this.latencyCounter.value = this.computeLatency(video);
-	}
-
-	private computeLatency(video: HTMLVideoElement): number {
-		const computedLatency = this.kickUtils().getLatency(video);
-		this.latencyTimings.value.push(computedLatency);
-
-		// Reset timings array if experiences sudden increase in latency
-		if (
-			this.latencyTimings.value.length > 1 &&
-			computedLatency - this.latencyTimings.value[this.latencyTimings.value.length - 2] > 2
-		) {
-			this.latencyTimings.value = [computedLatency];
+		const latency = this.latencySampler.add(this.kickUtils().getLatency(video));
+		if (latency !== undefined) {
+			this.latencyCounter.value = latency;
 		}
-
-		const numberOfSamples = 10;
-		if (this.latencyTimings.value.length > numberOfSamples) this.latencyTimings.value.shift();
-
-		return (
-			this.latencyTimings.value.reduce((accumulator, currentValue) => accumulator + currentValue, 0) /
-			this.latencyTimings.value.length
-		);
 	}
 
 	private watchPlaybackRate() {
@@ -105,8 +88,8 @@ export default class StreamLatencyModule extends KickModule {
 			video.currentTime = video.duration;
 			return;
 		}
-		const latency = this.computeLatency(video);
-		if (latency > 0) {
+		const latency = this.kickUtils().getLatency(video);
+		if (latency !== undefined && latency > 0) {
 			video.currentTime += latency;
 		}
 	}
