@@ -29,6 +29,8 @@ export const TWITCH_DEFAULT_SETTINGS: TwitchSettings = {
 	realVideoTimeFormat12h: false,
 	pinnedStreamersEnabled: true,
 	xayoWatchtimeEnabled: true,
+	xayoWatchtimePeriod: "365d",
 	channelSection: true,
 	chattersEnabled: true,
+	hideStories: false,
 };
