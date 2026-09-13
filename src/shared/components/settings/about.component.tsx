@@ -100,6 +100,10 @@ const Description = styled.p`
 	font-size: 11.5px;
 `;
 
+const PrivacyDescription = styled(Description)`
+	margin-top: 12px;
+`;
+
 const DocLink = styled.a`
 	color: #9147ff;
 	font-weight: 600;
@@ -293,7 +297,7 @@ export function EnhancerAboutComponent({ platform, workerService, icons }: Enhan
 
 			<Card>
 				<SectionTitle>Privacy &amp; Data</SectionTitle>
-				<Description>
+				<PrivacyDescription>
 					Enhancer may connect to external services depending on the platform and enabled features. See how we handle
 					your data in our{" "}
 					<DocLink
@@ -312,7 +316,7 @@ export function EnhancerAboutComponent({ platform, workerService, icons }: Enhan
 						third-party overview
 					</DocLink>
 					.
-				</Description>
+				</PrivacyDescription>
 
 				<Description>
 					If you have any questions, feel free to contact us at{" "}
