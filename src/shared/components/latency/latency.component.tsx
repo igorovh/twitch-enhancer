@@ -59,7 +59,7 @@ const PlaybackRate = styled.span`
 export function LatencyComponent({ click, latencyCounter, isLive, playbackRate }: LatencyComponentProps) {
 	const formatLatency = () => {
 		if (latencyCounter.value === undefined || latencyCounter.value < 0 || Number.isNaN(latencyCounter.value)) {
-			return "Loading...";
+			return "—";
 		}
 		return `${latencyCounter.value.toFixed(2)}s`;
 	};

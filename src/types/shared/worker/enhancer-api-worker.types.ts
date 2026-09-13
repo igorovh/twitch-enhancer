@@ -7,6 +7,7 @@ import type {
 	EnhancerChannelDto,
 	EnhancerMessageEvent,
 	EnhancerSubscription,
+	XayoWatchtimePeriod,
 } from "$types/apis/enhancer.apis.ts";
 import type { PlatformType } from "$types/shared/platform.types.ts";
 
@@ -91,6 +92,8 @@ export interface JoinEnhancerChannelPayload {
 
 export interface GetEnhancerWatchTimePayload {
 	username: string;
+	period: XayoWatchtimePeriod;
+	platform: PlatformType;
 }
 
 export interface DisconnectEnhancerApiPayload {

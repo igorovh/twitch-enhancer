@@ -7,8 +7,6 @@ import ChatAttachmentsModule from "$kick/modules/chat-attachments/chat-attachmen
 import ChatBadgesModule from "$kick/modules/chat-badges/chat-badges.module.tsx";
 import ChatFixAutoScrollModule from "$kick/modules/chat-fix-auto-scroll/chat-fix-auto-scroll.module.tsx";
 import ChatHighlightUserModule from "$kick/modules/chat-highlight-user/chat-highlight-user.module.tsx";
-import ChatMessageMenuModule from "$kick/modules/chat-message-menu/chat-message-menu.module.tsx";
-import MessageMenuModule from "$kick/modules/chat-message-menu/message-menu.module.tsx";
 import ChatMessagePopupModule from "$kick/modules/chat-message-popup/chat-message-popup.module.tsx";
 import ChatNicknameCustomizationModule from "$kick/modules/chat-nickname-customization/chat-nickname-customization.module.ts";
 import ChatModule from "$kick/modules/chat/chat.module.ts";
@@ -18,6 +16,7 @@ import SettingsButtonModule from "$kick/modules/settings-button/settings-button.
 import SettingsModule from "$kick/modules/settings/settings.module.tsx";
 import StreamLatencyReducerModule from "$kick/modules/stream-latency-reducer/stream-latency-reducer.module.tsx";
 import StreamLatencyModule from "$kick/modules/stream-latency/stream-latency.module.tsx";
+import WatchTimeModule from "$kick/modules/watchtime/watchtime.module.tsx";
 import Platform from "$shared/platform/platform.ts";
 import type { KickEvents } from "$types/platforms/kick/kick.events.types.ts";
 import type { KickSettings } from "$types/platforms/kick/kick.settings.types.ts";
@@ -52,6 +51,7 @@ export default class KickPlatform extends Platform<KickModule, KickEvents, KickS
 			new StreamLatencyModule(...dependencies),
 			new StreamLatencyReducerModule(...dependencies),
 			new RealVideoTimeModule(...dependencies),
+			new WatchTimeModule(...dependencies),
 			new ChannelSectionModule(...dependencies),
 			new LocalWatchtimeCounterModule(...dependencies),
 			new ChatHighlightUserModule(...dependencies),

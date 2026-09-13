@@ -117,12 +117,32 @@ export default class SettingsModule extends TwitchModule {
 				requiresRefreshToDisable: true,
 			},
 			{
+				id: "xayoWatchtimePeriod",
+				title: "Xayo Watchtime Period",
+				description: "Select the time range used for usercard watchtime and the /watchtime command.",
+				type: "select",
+				categoryId: CATEGORY.GENERAL,
+				dependsOn: { key: "xayoWatchtimeEnabled" },
+				options: [
+					{ value: "30d", label: "Last 30 days" },
+					{ value: "365d", label: "Last year" },
+					{ value: "all", label: "All time" },
+				],
+			},
+			{
 				id: "channelSection",
 				title: "Channel Section",
 				description: "Shows a section with watch time and quick access links.",
 				type: "toggle",
 				categoryId: CATEGORY.GENERAL,
 				requiresRefreshToDisable: true,
+			},
+			{
+				id: "hideStories",
+				title: "Hide Stories",
+				description: "Hides the Stories section and the Save Your Streak prompt in the left sidebar.",
+				type: "toggle",
+				categoryId: CATEGORY.GENERAL,
 			},
 			{
 				id: "loadAdditionalFonts",
@@ -220,6 +240,27 @@ export default class SettingsModule extends TwitchModule {
 				slider: true,
 				categoryId: CATEGORY.CHAT,
 				dependsOn: { key: "chatMentionSoundEnabled" },
+			},
+			{
+				id: "chatHideGiphyMessages",
+				title: "Filter Giphy Messages",
+				description:
+					"Hide Giphy messages or replace GIFs with text links. Changes apply to newly processed messages; refresh the page to update existing messages.",
+				type: "toggle",
+				categoryId: CATEGORY.CHAT,
+				hideInfo: false,
+			},
+			{
+				id: "chatGiphyMessageMode",
+				title: "Giphy Message Behavior",
+				description: "Choose whether to hide the entire message or display the GIF description as a clickable link.",
+				type: "radio",
+				categoryId: CATEGORY.CHAT,
+				dependsOn: { key: "chatHideGiphyMessages" },
+				options: [
+					{ value: "hide", label: "Hide entire message" },
+					{ value: "link", label: "Replace GIF with a text link" },
+				],
 			},
 			{
 				id: "quickAccessLinks",
