@@ -32,4 +32,5 @@ export const TWITCH_DEFAULT_SETTINGS: TwitchSettings = {
 	xayoWatchtimePeriod: "365d",
 	channelSection: true,
 	chattersEnabled: true,
+	hideStories: false,
 };
