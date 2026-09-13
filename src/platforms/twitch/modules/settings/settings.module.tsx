@@ -125,6 +125,13 @@ export default class SettingsModule extends TwitchModule {
 				requiresRefreshToDisable: true,
 			},
 			{
+				id: "hideStories",
+				title: "Hide Stories",
+				description: "Hides the Stories section and the Save Your Streak prompt in the left sidebar.",
+				type: "toggle",
+				categoryId: CATEGORY.GENERAL,
+			},
+			{
 				id: "loadAdditionalFonts",
 				title: "Enable Loading Additional Fonts",
 				description: "Loads additional font assets used by Enhancer for enhanced visual variety.",
