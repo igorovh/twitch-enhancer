@@ -176,11 +176,12 @@ export const WatchTimeUserCard = ({
 	onFetch,
 	onToggleCollapse,
 }: UserCardProps) => {
-	const collapseButton = (
-		<CollapseButton $platform={platform} type="button" aria-label="Hide watchtime" onClick={onToggleCollapse}>
-			×
-		</CollapseButton>
-	);
+	const collapseButton =
+		data.value !== undefined ? (
+			<CollapseButton $platform={platform} type="button" aria-label="Hide watchtime" onClick={onToggleCollapse}>
+				×
+			</CollapseButton>
+		) : null;
 
 	if (isCollapsed.value) {
 		return (
