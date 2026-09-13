@@ -74,9 +74,7 @@ export default class StreamLatencyModule extends TwitchModule {
 
 		if (isLive) {
 			const latency = this.getLatency();
-			if (typeof latency === "number" && latency >= 0) {
-				this.latencyCounter.value = latency;
-			}
+			this.latencyCounter.value = typeof latency === "number" && latency > 0 ? latency : -1;
 		}
 	}
 
@@ -94,10 +92,9 @@ export default class StreamLatencyModule extends TwitchModule {
 			this.logger.warn("Failed to find media player");
 			return;
 		}
-		const currentPosition = mediaPlayer.getPosition();
-		const latency = this.getBuffer();
-		if (latency === undefined || latency < 0) return;
-		mediaPlayer.seekTo(currentPosition + latency);
+		const latency = this.getLatency();
+		if (typeof latency !== "number" || latency <= 0) return;
+		mediaPlayer.seekTo(mediaPlayer.getPosition() + latency);
 	}
 
 	private getLatency() {
@@ -107,15 +104,6 @@ export default class StreamLatencyModule extends TwitchModule {
 			return;
 		}
 		return mediaPlayer.core.state.liveLatency;
-	}
-
-	private getBuffer() {
-		const mediaPlayer = this.twitchUtils().getMediaPlayerInstance();
-		if (!mediaPlayer) {
-			this.logger.warn("Failed to find media player");
-			return;
-		}
-		return mediaPlayer.core.state.ingestLatency;
 	}
 
 	private createPlaybackRateSignal() {

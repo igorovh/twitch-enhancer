@@ -11,6 +11,7 @@ export default class KickUtils {
 	) {}
 
 	private static readonly FIREFOX_LIVE_VIDEO_THRESHOLD = 5_000_000_000_000;
+	private static readonly CHAT_STICKY_THRESHOLD = 40;
 
 	getMessageData(messageElement: Element): KickChatMessageData | null {
 		const props = this.reactUtils.findReactChildren<KickChatMessageData>(
@@ -114,21 +115,58 @@ export default class KickUtils {
 		return video.duration === Number.POSITIVE_INFINITY || video.duration > KickUtils.FIREFOX_LIVE_VIDEO_THRESHOLD;
 	}
 
-	getLatency(video: HTMLVideoElement): number {
+	getLatency(video: HTMLVideoElement): number | undefined {
 		const { currentTime, buffered } = video;
-		if (buffered.length === 0) return -1;
+		if (buffered.length === 0) return undefined;
 		const bufferEnd = buffered.end(buffered.length - 1);
 
 		return bufferEnd - currentTime;
 	}
 
-	async scrollToBottomOnChat() {
-		const chatRoom = this.getChannelChatRoom();
-		if (!chatRoom) return;
-		if (!chatRoom.isPaused) {
-			chatRoom.setIsPaused(true);
-			await this.commonUtils.delay(10);
-			chatRoom.setIsPaused(false);
+	private chatScroller: { container: HTMLElement; sticky: boolean } | undefined;
+
+	scrollToBottomOnChat() {
+		const scroller = this.resolveChatScroller();
+		if (!scroller?.sticky) return;
+		scroller.container.scrollTop = scroller.container.scrollHeight;
+	}
+
+	private resolveChatScroller() {
+		if (this.chatScroller?.container.isConnected) return this.chatScroller;
+		const container = this.findChatScrollContainer();
+		if (!container) return undefined;
+		const scroller = { container, sticky: KickUtils.isAtBottom(container) };
+		container.addEventListener(
+			"scroll",
+			() => {
+				scroller.sticky = KickUtils.isAtBottom(container);
+			},
+			{ passive: true },
+		);
+		this.chatScroller = scroller;
+		return scroller;
+	}
+
+	private static isAtBottom(container: HTMLElement) {
+		return container.scrollHeight - container.scrollTop - container.clientHeight <= KickUtils.CHAT_STICKY_THRESHOLD;
+	}
+
+	private findChatScrollContainer(): HTMLElement | undefined {
+		const message = document.querySelector("#channel-chatroom div[data-index]");
+		let node: HTMLElement | null = message?.parentElement ?? null;
+		while (node && node !== document.body) {
+			const overflowY = getComputedStyle(node).overflowY;
+			if (overflowY === "auto" || overflowY === "scroll") return node;
+			node = node.parentElement;
 		}
+		const chatRoom = document.querySelector("#channel-chatroom");
+		if (!chatRoom) return undefined;
+		for (const candidate of chatRoom.querySelectorAll<HTMLElement>("*")) {
+			const overflowY = getComputedStyle(candidate).overflowY;
+			if ((overflowY === "auto" || overflowY === "scroll") && candidate.scrollHeight > candidate.clientHeight) {
+				return candidate;
+			}
+		}
+		return undefined;
 	}
 }

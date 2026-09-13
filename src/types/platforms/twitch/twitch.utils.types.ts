@@ -72,7 +72,7 @@ export type MediaPlayerInstanceBase = {
 	core: {
 		state: {
 			liveLatency: number;
-			ingestLatency: number;
+			ingestLatency?: number;
 			liveLowLatency: boolean;
 		};
 		paused: boolean;

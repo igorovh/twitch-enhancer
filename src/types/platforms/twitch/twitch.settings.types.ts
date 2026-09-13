@@ -1,9 +1,12 @@
+import type { XayoWatchtimePeriod } from "$types/apis/enhancer.apis.ts";
 import type { QuickAccessLink } from "$types/shared/components/settings.component.types.ts";
 
 export type TwitchSettings = {
 	chatImagesEnabled: boolean;
 	chatImagesOnHover: boolean;
 	chatImagesSize: number;
+	chatHideGiphyMessages: boolean;
+	chatGiphyMessageMode: "hide" | "link";
 	chatBadgesEnabled: boolean;
 	chatNicknameCustomizationEnabled: boolean;
 	loadAdditionalFonts: boolean;
@@ -28,8 +31,10 @@ export type TwitchSettings = {
 	realVideoTimeFormat12h: boolean;
 	pinnedStreamersEnabled: boolean;
 	xayoWatchtimeEnabled: boolean;
+	xayoWatchtimePeriod: XayoWatchtimePeriod;
 	channelSection: boolean;
 	chattersEnabled: boolean;
+	hideStories: boolean;
 };
 
 export type TwitchSettingsEvents = {
